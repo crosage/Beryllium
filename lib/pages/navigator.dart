@@ -52,17 +52,47 @@ class navigator extends StatefulWidget{
 
 class navigatorState extends State<navigator>{
   int index=0;
+  bool visable=true;
   PaneDisplayMode paneDisplayMode=PaneDisplayMode.open;
   @override
   Widget build(BuildContext context){
     return NavigationView(
+      onOpenSearch: (){
+        print("OPENSEARCH");
+      },
+      onDisplayModeChanged: (pan){
+        print("******************* $pan");
+      },
       appBar: const NavigationAppBar(
         title: Text('NavigationView'),
       ),
+
       pane: NavigationPane(
+
         selected: index,
         onChanged: (newIndex) => setState(() => index = newIndex),
+        header: Visibility(
+          visible: visable,
+          child:IconButton(icon: Icon(FluentIcons.global_nav_button),onPressed: (){
+          if(paneDisplayMode==PaneDisplayMode.open){
+            print("$paneDisplayMode to compact");
 
+            setState(() {
+              paneDisplayMode=PaneDisplayMode.compact;
+              visable=false;
+            });
+            print("$paneDisplayMode to compact");
+          }
+          else if (paneDisplayMode==PaneDisplayMode.compact){
+            print("$paneDisplayMode to open");
+
+            setState(() {
+              paneDisplayMode=PaneDisplayMode.open;
+              visable=false;
+            });
+            print("$paneDisplayMode to open");
+          }
+        },),),
         displayMode: paneDisplayMode,
         items: items,
         footerItems: [
