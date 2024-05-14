@@ -3,6 +3,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import '../component/requiredTextField.dart';
 
 class LoginPage extends StatefulWidget {
+  final Function(int) navigateToNewPage;
+  LoginPage({Key? key, required this.navigateToNewPage}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -10,6 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {

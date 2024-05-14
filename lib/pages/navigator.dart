@@ -3,45 +3,6 @@ import 'package:flutter/material.dart' show Icons;
 
 import 'login.dart';
 
-List<NavigationPaneItem> items = [
-  PaneItem(
-    icon: const Icon(FluentIcons.home),
-    title: const Text('Home'),
-    body: const Row(),
-  ),
-  PaneItemSeparator(),
-  PaneItem(
-    icon: const Icon(FluentIcons.boards),
-    title: const Text('test'),
-    // infoBadge: const InfoBadge(source: Text('8')),
-    body: const Row(
-
-    ),
-  ),
-  PaneItem(
-    icon: const Icon(FluentIcons.disable_updates),
-    title: const Text('test2'),
-    body: const Row(),
-    enabled: false,
-  ),
-  PaneItemExpander(
-    icon: const Icon(FluentIcons.contact),
-    title: const Text('Account'),
-    body: LoginPage(),
-    items: [
-      PaneItem(
-        icon: const Icon(Icons.login),
-        title: const Text('Mail'),
-        body: LoginPage(),
-      ),
-      PaneItem(
-        icon: const Icon(FluentIcons.add_friend),
-        title: const Text('注册'),
-        body: const Row(),
-      ),
-    ],
-  ),
-];
 
 class navigator extends StatefulWidget{
   @override
@@ -54,6 +15,12 @@ class navigatorState extends State<navigator>{
   int index=0;
   bool visable=true;
   PaneDisplayMode paneDisplayMode=PaneDisplayMode.open;
+  void handleIndexChanged(int newIndex) {
+    setState(() {
+      index = newIndex;
+    });
+  }
+
   @override
   Widget build(BuildContext context){
     return NavigationView(
@@ -68,7 +35,6 @@ class navigatorState extends State<navigator>{
       ),
 
       pane: NavigationPane(
-
         selected: index,
         onChanged: (newIndex) => setState(() => index = newIndex),
         header: Visibility(
@@ -94,32 +60,70 @@ class navigatorState extends State<navigator>{
           }
         },),),
         displayMode: paneDisplayMode,
-        items: items,
+        items: [
+          PaneItem(
+            icon: const Icon(FluentIcons.home),
+            title: const Text('Home'),
+            body: const Row(),
+          ),
+          PaneItemSeparator(),
+          PaneItem(
+            icon: const Icon(FluentIcons.boards),
+            title: const Text('test'),
+            // infoBadge: const InfoBadge(source: Text('8')),
+            body: const Row(
+
+            ),
+          ),
+          PaneItem(
+            icon: const Icon(FluentIcons.disable_updates),
+            title: const Text('test2'),
+            body: const Row(),
+            enabled: false,
+          ),
+          PaneItemExpander(
+            icon: const Icon(FluentIcons.contact),
+            title: const Text('Account'),
+            body: LoginPage(navigateToNewPage: handleIndexChanged,),
+            items: [
+              PaneItem(
+                icon: const Icon(Icons.login),
+                title: const Text('Mail'),
+                body: LoginPage(navigateToNewPage:handleIndexChanged,),
+              ),
+              PaneItem(
+                icon: const Icon(FluentIcons.add_friend),
+                title: const Text('注册'),
+                body: const Row(),
+              ),
+            ],
+          ),
+        ],
         footerItems: [
           PaneItem(
             icon: const Icon(FluentIcons.settings),
             title: const Text('Settings'),
             body: Row(),
           ),
-          PaneItemAction(
-            icon: const Icon(FluentIcons.add),
-            title: const Text('Add New Item'),
-            onTap: () {
-              // Your Logic to Add New `NavigationPaneItem`
-              items.add(
-                PaneItem(
-                  icon: const Icon(FluentIcons.new_folder),
-                  title: const Text('New Item'),
-                  body: const Center(
-                    child: Text(
-                      'This is a newly added Item',
-                    ),
-                  ),
-                ),
-              );
-              setState(() {});
-            },
-          ),
+          // PaneItemAction(
+          //   icon: const Icon(FluentIcons.add),
+          //   title: const Text('Add New Item'),
+          //   onTap: () {
+          //     // Your Logic to Add New `NavigationPaneItem`
+          //     items.add(
+          //       PaneItem(
+          //         icon: const Icon(FluentIcons.new_folder),
+          //         title: const Text('New Item'),
+          //         body: const Center(
+          //           child: Text(
+          //             'This is a newly added Item',
+          //           ),
+          //         ),
+          //       ),
+          //     );
+          //     setState(() {});
+          //   },
+          // ),
         ],
       ),
     );
