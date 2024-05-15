@@ -3,18 +3,18 @@ import 'package:elegant_notification/elegant_notification.dart';
 import 'package:elegant_notification/resources/arrays.dart';
 import '../component/requiredTextField.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
-  LoginPage({Key? key, required this.navigateToNewPage}) : super(key: key);
+  RegisterPage({Key? key, required this.navigateToNewPage}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  final TextEditingController _checkController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 60,
                   ),
-                  Text("区块链系统-登录",
+                  Text("区块链系统-注册",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -55,24 +55,31 @@ class _LoginPageState extends State<LoginPage> {
                   requiredTextField(
                     controller: _usernameController,
                     width: 300,
-                    placeholder: "用户名",
+                    placeholder: "输入用户名",
                     text: "Username",
                   ),
                   SizedBox(height: 20),
                   requiredTextField(
-                    placeholder: "密码",
+                    placeholder: "输入密码",
                     text: "password",
                     width: 300,
                     controller: _passwordController,
+                  ),
+                  SizedBox(height: 20),
+                  requiredTextField(
+                    placeholder: "确认密码",
+                    text: "check your password",
+                    width: 300,
+                    controller: _checkController,
                   ),
                   SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FilledButton(
-                          child: const Text('登录'),
-                          onPressed: () => debugPrint('pressed button'),
-                        ),
+                        child: const Text('注册'),
+                        onPressed: () => register(context),
+                      ),
                       SizedBox(width: 30,)
                     ],
                   )
@@ -85,28 +92,40 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login(BuildContext context) {
-
+  void register(BuildContext context) {
+    // 获取用户输入的用户名、密码和确认密码
     String username = _usernameController.text;
     String password = _passwordController.text;
+    String confirmPassword = _checkController.text;
 
-    if (username.isEmpty || password.isEmpty) {
+    // 验证用户名、密码和确认密码是否为空
+    if (username.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      // 如果有任何一个为空，显示错误提示
       ElegantNotification.error(
         title: Text("error"),
-        description: Text("用户名或密码不能为空"),
+        description: Text("含有未填字段"),
         animation: AnimationType.fromTop,
       ).show(context);
       return;
     }
 
+    // 验证密码和确认密码是否相同
+    if (password != confirmPassword) {
+      // 如果不相同，显示错误提示
+      ElegantNotification.error(
+        title: Text("error"),
+        description: Text("两次密码不同"),
+        animation: AnimationType.fromTop,
+      ).show(context);
+      return;
+    }
     ElegantNotification.success(
       title: Text("success"),
-      description: Text("登录成功"),
+      description: Text("注册成功"),
       animation: AnimationType.fromTop,
     ).show(context);
     widget.navigateToNewPage(1);
     print('用户名: $username');
     print('密码: $password');
   }
-
 }

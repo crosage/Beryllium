@@ -1,20 +1,22 @@
+import 'package:blockchain/pages/register.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show Icons;
 
 import 'login.dart';
 
-
-class navigator extends StatefulWidget{
+class navigator extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return navigatorState();
   }
 }
 
-class navigatorState extends State<navigator>{
-  int index=0;
-  bool visable=true;
-  PaneDisplayMode paneDisplayMode=PaneDisplayMode.open;
+class navigatorState extends State<navigator> {
+  int index = 0;
+  bool visable = true;
+  PaneDisplayMode paneDisplayMode = PaneDisplayMode.open;
+  Map<String, dynamic> userInfo = {};
+
   void handleIndexChanged(int newIndex) {
     setState(() {
       index = newIndex;
@@ -22,48 +24,50 @@ class navigatorState extends State<navigator>{
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return NavigationView(
-      onOpenSearch: (){
+      onOpenSearch: () {
         print("OPENSEARCH");
       },
-      onDisplayModeChanged: (pan){
+      onDisplayModeChanged: (pan) {
         print("******************* $pan");
       },
       appBar: const NavigationAppBar(
         title: Text('NavigationView'),
       ),
-
       pane: NavigationPane(
         selected: index,
         onChanged: (newIndex) => setState(() => index = newIndex),
         header: Visibility(
           visible: visable,
-          child:IconButton(icon: Icon(FluentIcons.global_nav_button),onPressed: (){
-          if(paneDisplayMode==PaneDisplayMode.open){
-            print("$paneDisplayMode to compact");
+          child: IconButton(
+            icon: Icon(FluentIcons.global_nav_button),
+            onPressed: () {
+              if (paneDisplayMode == PaneDisplayMode.open) {
+                print("$paneDisplayMode to compact");
 
-            setState(() {
-              paneDisplayMode=PaneDisplayMode.compact;
-              visable=false;
-            });
-            print("$paneDisplayMode to compact");
-          }
-          else if (paneDisplayMode==PaneDisplayMode.compact){
-            print("$paneDisplayMode to open");
+                setState(() {
+                  paneDisplayMode = PaneDisplayMode.compact;
+                  visable = false;
+                });
+                print("$paneDisplayMode to compact");
+              } else if (paneDisplayMode == PaneDisplayMode.compact) {
+                print("$paneDisplayMode to open");
 
-            setState(() {
-              paneDisplayMode=PaneDisplayMode.open;
-              visable=false;
-            });
-            print("$paneDisplayMode to open");
-          }
-        },),),
+                setState(() {
+                  paneDisplayMode = PaneDisplayMode.open;
+                  visable = false;
+                });
+                print("$paneDisplayMode to open");
+              }
+            },
+          ),
+        ),
         displayMode: paneDisplayMode,
         items: [
           PaneItem(
             icon: const Icon(FluentIcons.home),
-            title: const Text('Home'),
+            title: const Text('首页'),
             body: const Row(),
           ),
           PaneItemSeparator(),
@@ -71,9 +75,8 @@ class navigatorState extends State<navigator>{
             icon: const Icon(FluentIcons.boards),
             title: const Text('test'),
             // infoBadge: const InfoBadge(source: Text('8')),
-            body: const Row(
-
-            ),
+            body: const Row(),
+            enabled: userInfo.isNotEmpty
           ),
           PaneItem(
             icon: const Icon(FluentIcons.disable_updates),
@@ -83,20 +86,47 @@ class navigatorState extends State<navigator>{
           ),
           PaneItemExpander(
             icon: const Icon(FluentIcons.contact),
-            title: const Text('Account'),
-            body: LoginPage(navigateToNewPage: handleIndexChanged,),
-            items: [
-              PaneItem(
-                icon: const Icon(Icons.login),
-                title: const Text('Mail'),
-                body: LoginPage(navigateToNewPage:handleIndexChanged,),
+            title: const Text('我的账号'),
+            body: Container(
+              child: IconButton(
+                icon: Icon(Icons.accessible_forward),
+                onPressed: () {
+                  print(userInfo);
+                  print("userInfo=={}?: ${userInfo == {}}");
+                },
               ),
+            ),
+            items: [
+              if (userInfo.isEmpty)
+                PaneItem(
+                  icon: const Icon(FluentIcons.follow_user),
+                  title: const Text('登录'),
+                  body: LoginPage(
+                    navigateToNewPage: handleIndexChanged,
+                  ),
+                ),
+              if (userInfo.isEmpty)
+                PaneItem(
+                  icon: const Icon(FluentIcons.add_friend),
+                  title: const Text('注册'),
+                  body: RegisterPage(
+                    navigateToNewPage: handleIndexChanged,
+                  ),
+                ),
               PaneItem(
-                icon: const Icon(FluentIcons.add_friend),
-                title: const Text('注册'),
-                body: const Row(),
+                icon: const Icon(FluentIcons.account_management),
+                title: const Text('个人信息设置'),
+                body: LoginPage(
+                  navigateToNewPage: handleIndexChanged,
+                ),
               ),
             ],
+          ),
+          PaneItem(
+            icon: const Icon(FluentIcons.admin_a_logo32),
+            title: const Text('管理员界面'),
+            body: const Row(),
+            // enabled: false,
           ),
         ],
         footerItems: [
