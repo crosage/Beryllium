@@ -17,7 +17,6 @@ class navigatorState extends State<navigator> {
   int index = 0;
   bool visable = true;
   PaneDisplayMode paneDisplayMode = PaneDisplayMode.open;
-  Map<String, dynamic> userInfo = {};
   void updateUser(User nowUser){
     setState(() {
       user=nowUser;
@@ -84,7 +83,7 @@ class navigatorState extends State<navigator> {
             title: const Text('test'),
             // infoBadge: const InfoBadge(source: Text('8')),
             body: const Row(),
-            enabled: userInfo.isNotEmpty
+            enabled: user.token!.isNotEmpty
           ),
           PaneItem(
             icon: const Icon(FluentIcons.disable_updates),
@@ -99,13 +98,12 @@ class navigatorState extends State<navigator> {
               child: IconButton(
                 icon: Icon(Icons.accessible_forward),
                 onPressed: () {
-                  print(userInfo);
-                  print("userInfo=={}?: ${userInfo == {}}");
+
                 },
               ),
             ),
             items: [
-              if (userInfo.isEmpty)
+              if (user.token!.isEmpty)
                 PaneItem(
                   icon: const Icon(FluentIcons.follow_user),
                   title: const Text('登录'),
@@ -114,7 +112,7 @@ class navigatorState extends State<navigator> {
                     updateUserState: updateUser,
                   ),
                 ),
-              if (userInfo.isEmpty)
+              if (user.token!.isEmpty)
                 PaneItem(
                   icon: const Icon(FluentIcons.add_friend),
                   title: const Text('注册'),
