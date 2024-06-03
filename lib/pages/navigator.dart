@@ -2,6 +2,7 @@ import 'package:blockchain/pages/register.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show Icons;
 
+import '../struct/user.dart';
 import 'login.dart';
 
 class navigator extends StatefulWidget {
@@ -12,11 +13,18 @@ class navigator extends StatefulWidget {
 }
 
 class navigatorState extends State<navigator> {
+  User user=User(null,null,null);
   int index = 0;
   bool visable = true;
   PaneDisplayMode paneDisplayMode = PaneDisplayMode.open;
   Map<String, dynamic> userInfo = {};
-
+  void updateUser(User nowUser){
+    setState(() {
+      user=nowUser;
+      print(user);
+      print(user.token);
+    });
+  }
   void handleIndexChanged(int newIndex) {
     setState(() {
       index = newIndex;
@@ -103,6 +111,7 @@ class navigatorState extends State<navigator> {
                   title: const Text('登录'),
                   body: LoginPage(
                     navigateToNewPage: handleIndexChanged,
+                    updateUserState: updateUser,
                   ),
                 ),
               if (userInfo.isEmpty)
@@ -111,6 +120,7 @@ class navigatorState extends State<navigator> {
                   title: const Text('注册'),
                   body: RegisterPage(
                     navigateToNewPage: handleIndexChanged,
+                    updateUserState: updateUser,
                   ),
                 ),
               PaneItem(
@@ -118,6 +128,7 @@ class navigatorState extends State<navigator> {
                 title: const Text('个人信息设置'),
                 body: LoginPage(
                   navigateToNewPage: handleIndexChanged,
+                  updateUserState: updateUser,
                 ),
               ),
             ],

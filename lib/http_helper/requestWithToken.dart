@@ -3,8 +3,8 @@ import 'package:dio/dio.dart';
 class HttpHelper{
   late Dio _dio;
 
-  DioHelper(){
-    _dio=Dio(BaseOptions());
+  HttpHelper(){
+    _dio = Dio(BaseOptions());
   }
 
   Future<Response> getRequest(String url, {String? token}) async {

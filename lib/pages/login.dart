@@ -1,17 +1,25 @@
+import 'dart:convert';
+
+import 'package:blockchain/component/requiredTextField.dart';
+import 'package:blockchain/http_helper/requestWithToken.dart';
+import 'package:blockchain/struct/user.dart';
+import 'package:blockchain/utils/config.dart';
+import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:elegant_notification/resources/arrays.dart';
-import '../component/requiredTextField.dart';
 
 class LoginPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
-  LoginPage({Key? key, required this.navigateToNewPage}) : super(key: key);
+  final Function(User) updateUserState;
+  LoginPage({Key? key, required this.navigateToNewPage,required this.updateUserState}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  HttpHelper httpHelper=HttpHelper();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -50,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold)),
+                          fontWeight: FontWeight.bold),),
                   SizedBox(height: 20),
                   requiredTextField(
                     controller: _usernameController,
@@ -71,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       FilledButton(
                           child: const Text('登录'),
-                          onPressed: () => debugPrint('pressed button'),
+                          onPressed: () => _login(context),
                         ),
                       SizedBox(width: 30,)
                     ],
@@ -85,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login(BuildContext context) {
+  void _login(BuildContext context) async{
 
     String username = _usernameController.text;
     String password = _passwordController.text;
@@ -98,15 +106,38 @@ class _LoginPageState extends State<LoginPage> {
       ).show(context);
       return;
     }
+    try{
+      Map<String,dynamic> postData={
+        "username":username,
+        "password":password
+      };
+      Response getResponse= await httpHelper.postRequest(BaseUrl+"/api/user/login",postData);
+      Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
+      if (responseData["code"]==200) {
+        // 请求成功，处理返回的数据
+        var data = responseData["data"];
+        // print(data);
+        User now=User(data["token"],data["username"],data["usertype"]);
+        // 例如，打印用户信息
+        widget.updateUserState(now);
+      } else {
+        // 请求失败，打印错误信息
+        print("Error: ${responseData["message"]}");
+      }
 
-    ElegantNotification.success(
-      title: Text("success"),
-      description: Text("登录成功"),
-      animation: AnimationType.fromTop,
-    ).show(context);
-    widget.navigateToNewPage(1);
-    print('用户名: $username');
-    print('密码: $password');
+      ElegantNotification.success(
+        title: Text("success"),
+        description: Text("登录成功"),
+        animation: AnimationType.fromTop,
+      ).show(context);
+      widget.navigateToNewPage(1);
+    }catch(e){
+      print(e);
+      ElegantNotification.error(
+        title: Text("error"),
+        description: Text(e.toString()),
+        animation: AnimationType.fromTop,
+      ).show(context);
+    }
   }
-
 }

@@ -1,17 +1,23 @@
+import 'package:blockchain/struct/user.dart';
+import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:elegant_notification/resources/arrays.dart';
-import '../component/requiredTextField.dart';
+import 'package:blockchain/component/requiredTextField.dart';
+import 'package:blockchain/http_helper/requestWithToken.dart';
+import 'package:blockchain/utils/config.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
-  RegisterPage({Key? key, required this.navigateToNewPage}) : super(key: key);
+  final Function(User) updateUserState;
+  RegisterPage({Key? key, required this.navigateToNewPage,required this.updateUserState}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  HttpHelper httpHelper=HttpHelper();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _checkController = TextEditingController();
@@ -92,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void register(BuildContext context) {
+  void register(BuildContext context) async{
     // 获取用户输入的用户名、密码和确认密码
     String username = _usernameController.text;
     String password = _passwordController.text;
@@ -119,13 +125,26 @@ class _RegisterPageState extends State<RegisterPage> {
       ).show(context);
       return;
     }
-    ElegantNotification.success(
-      title: Text("success"),
-      description: Text("注册成功"),
-      animation: AnimationType.fromTop,
-    ).show(context);
-    widget.navigateToNewPage(1);
-    print('用户名: $username');
-    print('密码: $password');
+    try{
+      Map<String,dynamic> postData={
+        "username":username,
+        "password":password
+      };
+      Response getResponse= await httpHelper.postRequest(BaseUrl+"/api/user",postData);
+      print(getResponse.data);
+      print(getResponse);
+      ElegantNotification.success(
+        title: Text("success"),
+        description: Text("注册成功"),
+        animation: AnimationType.fromTop,
+      ).show(context);
+      widget.navigateToNewPage(1);
+    }catch(e){
+      ElegantNotification.error(
+        title: Text("error"),
+        description: Text(e.toString()),
+        animation: AnimationType.fromTop,
+      ).show(context);
+    }
   }
 }
