@@ -3,8 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:elegant_notification/resources/arrays.dart';
-import 'package:blockchain/component/requiredTextField.dart';
-import 'package:blockchain/service/requestWithToken.dart';
+import 'package:blockchain/component/required_text_field.dart';
+import 'package:blockchain/service/request_with_token.dart';
 import 'package:blockchain/utils/config.dart';
 
 class RegisterPage extends StatefulWidget {

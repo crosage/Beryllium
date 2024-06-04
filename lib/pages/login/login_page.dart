@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:blockchain/component/requiredTextField.dart';
-import 'package:blockchain/service/requestWithToken.dart';
+import 'package:blockchain/component/required_text_field.dart';
+import 'package:blockchain/service/request_with_token.dart';
 import 'package:blockchain/model/user.dart';
 import 'package:blockchain/utils/config.dart';
 import 'package:dio/dio.dart';
