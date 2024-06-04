@@ -60,14 +60,14 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 20,
                           fontWeight: FontWeight.bold),),
                   SizedBox(height: 20),
-                  requiredTextField(
+                  RequiredTextField(
                     controller: _usernameController,
                     width: 300,
                     placeholder: "用户名",
                     text: "Username",
                   ),
                   SizedBox(height: 20),
-                  requiredTextField(
+                  RequiredTextField(
                     placeholder: "密码",
                     text: "password",
                     width: 300,

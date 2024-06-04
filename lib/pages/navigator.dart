@@ -1,8 +1,8 @@
 import 'package:blockchain/pages/admin/admin_page.dart';
 import 'package:blockchain/pages/register/register_page.dart';
+import 'package:blockchain/pages/setting/setting_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show Icons;
-
 import 'package:blockchain/model/user.dart';
 import 'login/login_page.dart';
 
@@ -146,7 +146,7 @@ class navigatorState extends State<navigator> {
           PaneItem(
             icon: const Icon(FluentIcons.settings),
             title: const Text('Settings'),
-            body: Row(),
+            body: SettingPage(navigateToNewPage: handleIndexChanged, updateUserState: updateUser),
           ),
           // PaneItemAction(
           //   icon: const Icon(FluentIcons.add),
