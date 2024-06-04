@@ -1,9 +1,10 @@
-import 'package:blockchain/pages/register.dart';
+import 'package:blockchain/pages/admin/adminPage.dart';
+import 'package:blockchain/pages/register/registerPage.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show Icons;
 
-import '../struct/user.dart';
-import 'login.dart';
+import 'package:blockchain/model/user.dart';
+import 'login/loginPage.dart';
 
 class navigator extends StatefulWidget {
   @override
@@ -83,7 +84,7 @@ class navigatorState extends State<navigator> {
             title: const Text('test'),
             // infoBadge: const InfoBadge(source: Text('8')),
             body: const Row(),
-            enabled: user.token!.isNotEmpty
+            enabled: user.token!=null
           ),
           PaneItem(
             icon: const Icon(FluentIcons.disable_updates),
@@ -103,7 +104,7 @@ class navigatorState extends State<navigator> {
               ),
             ),
             items: [
-              if (user.token!.isEmpty)
+              if (user.token==null)
                 PaneItem(
                   icon: const Icon(FluentIcons.follow_user),
                   title: const Text('登录'),
@@ -112,7 +113,7 @@ class navigatorState extends State<navigator> {
                     updateUserState: updateUser,
                   ),
                 ),
-              if (user.token!.isEmpty)
+              if (user.token==null)
                 PaneItem(
                   icon: const Icon(FluentIcons.add_friend),
                   title: const Text('注册'),
@@ -134,7 +135,10 @@ class navigatorState extends State<navigator> {
           PaneItem(
             icon: const Icon(FluentIcons.admin_a_logo32),
             title: const Text('管理员界面'),
-            body: const Row(),
+            body: AdminPage(
+              navigateToNewPage: handleIndexChanged,
+              updateUserState: updateUser,
+            ),
             // enabled: false,
           ),
         ],
