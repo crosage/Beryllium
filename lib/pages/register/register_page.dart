@@ -9,8 +9,7 @@ import 'package:blockchain/utils/config.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
-  final Function(User) updateUserState;
-  RegisterPage({Key? key, required this.navigateToNewPage,required this.updateUserState}) : super(key: key);
+  RegisterPage({Key? key, required this.navigateToNewPage}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();

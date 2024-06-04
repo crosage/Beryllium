@@ -8,11 +8,11 @@ import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:elegant_notification/resources/arrays.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
-  final Function(User) updateUserState;
-  LoginPage({Key? key, required this.navigateToNewPage,required this.updateUserState}) : super(key: key);
+  LoginPage({Key? key, required this.navigateToNewPage}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
         // print(data);
         User now=User(data["token"],data["username"],data["usertype"]);
         // 例如，打印用户信息
-        widget.updateUserState(now);
+        Provider.of<UserModel>(context, listen: false).updateUser(now);
       } else {
         // 请求失败，打印错误信息
         print("Error: ${responseData["message"]}");

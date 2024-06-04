@@ -11,12 +11,10 @@ import 'package:flutter/material.dart'
 
 class SettingPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
-  final Function(User) updateUserState;
 
   SettingPage(
       {Key? key,
-        required this.navigateToNewPage,
-        required this.updateUserState})
+        required this.navigateToNewPage,})
       : super(key: key);
 
   @override

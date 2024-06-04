@@ -4,6 +4,7 @@ import 'package:blockchain/pages/setting/setting_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show Icons;
 import 'package:blockchain/model/user.dart';
+import 'package:provider/provider.dart';
 import 'login/login_page.dart';
 
 class navigator extends StatefulWidget {
@@ -14,16 +15,14 @@ class navigator extends StatefulWidget {
 }
 
 class navigatorState extends State<navigator> {
-  User user=User(null,null,null);
+  late UserModel userModel;
   int index = 0;
   bool visable = true;
   PaneDisplayMode paneDisplayMode = PaneDisplayMode.open;
-  void updateUser(User nowUser){
-    setState(() {
-      user=nowUser;
-      print(user);
-      print(user.token);
-    });
+  @override
+  void initState(){
+    super.initState();
+
   }
   void handleIndexChanged(int newIndex) {
     setState(() {
@@ -33,6 +32,8 @@ class navigatorState extends State<navigator> {
 
   @override
   Widget build(BuildContext context) {
+    userModel = Provider.of<UserModel>(context, listen: true);
+    print(userModel.token);
     return NavigationView(
       onOpenSearch: () {
         print("OPENSEARCH");
@@ -84,7 +85,7 @@ class navigatorState extends State<navigator> {
             title: const Text('test'),
             // infoBadge: const InfoBadge(source: Text('8')),
             body: const Row(),
-            enabled: user.token!=null
+            enabled: userModel.token==""
           ),
           PaneItem(
             icon: const Icon(FluentIcons.disable_updates),
@@ -104,22 +105,20 @@ class navigatorState extends State<navigator> {
               ),
             ),
             items: [
-              if (user.token==null)
+              if (userModel.token=="")
                 PaneItem(
                   icon: const Icon(FluentIcons.follow_user),
                   title: const Text('登录'),
                   body: LoginPage(
                     navigateToNewPage: handleIndexChanged,
-                    updateUserState: updateUser,
                   ),
                 ),
-              if (user.token==null)
+              if (userModel.token=="")
                 PaneItem(
                   icon: const Icon(FluentIcons.add_friend),
                   title: const Text('注册'),
                   body: RegisterPage(
                     navigateToNewPage: handleIndexChanged,
-                    updateUserState: updateUser,
                   ),
                 ),
               PaneItem(
@@ -127,7 +126,6 @@ class navigatorState extends State<navigator> {
                 title: const Text('个人信息设置'),
                 body: LoginPage(
                   navigateToNewPage: handleIndexChanged,
-                  updateUserState: updateUser,
                 ),
               ),
             ],
@@ -137,7 +135,6 @@ class navigatorState extends State<navigator> {
             title: const Text('管理员界面'),
             body: AdminPage(
               navigateToNewPage: handleIndexChanged,
-              updateUserState: updateUser,
             ),
             // enabled: false,
           ),
@@ -146,7 +143,7 @@ class navigatorState extends State<navigator> {
           PaneItem(
             icon: const Icon(FluentIcons.settings),
             title: const Text('Settings'),
-            body: SettingPage(navigateToNewPage: handleIndexChanged, updateUserState: updateUser),
+            body: SettingPage(navigateToNewPage: handleIndexChanged),
           ),
           // PaneItemAction(
           //   icon: const Icon(FluentIcons.add),

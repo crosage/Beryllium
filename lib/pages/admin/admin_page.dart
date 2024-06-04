@@ -1,11 +1,12 @@
+// 决定使用特定tab+tabview实现
+
 import 'dart:math';
 import 'package:blockchain/model/user.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class AdminPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
-  final Function(User) updateUserState;
-  AdminPage({Key? key, required this.navigateToNewPage,required this.updateUserState}) : super(key: key);
+  AdminPage({Key? key, required this.navigateToNewPage}) : super(key: key);
 
   @override
   _AdminPageState createState() => _AdminPageState();
