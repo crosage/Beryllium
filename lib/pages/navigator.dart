@@ -1,10 +1,10 @@
-import 'package:blockchain/pages/admin/adminPage.dart';
-import 'package:blockchain/pages/register/registerPage.dart';
+import 'package:blockchain/pages/admin/admin_page.dart';
+import 'package:blockchain/pages/register/register_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show Icons;
 
 import 'package:blockchain/model/user.dart';
-import 'login/loginPage.dart';
+import 'login/login_page.dart';
 
 class navigator extends StatefulWidget {
   @override
