@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' show Material,InkWell;
+import 'package:flutter/material.dart' show Material, InkWell;
 
 class TableWidget extends StatefulWidget {
   final List<dynamic> headers;
@@ -15,56 +15,65 @@ class TableWidget extends StatefulWidget {
 class _TableWidgetState extends State<TableWidget> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: widget.data.length + 1, // +1 for header row
-      itemBuilder: (BuildContext context, int index) {
-        if (index == 0) {
-          // Header row
-          return Material(
-              child:InkWell(
-            onTap: () {
-              // Handle header row click
-              print('Header clicked');
-            },
-            child: Container(
-              // color: Colors.grey[300],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: widget.headers.map((header) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      header,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  );
-                }).toList(),
+    return Container(
+      width: 1000,
+      child: ListView.builder(
+        itemCount: widget.data.length + 1, // +1 for header row
+        itemBuilder: (BuildContext context, int index) {
+          if (index == 0) {
+            // Header row
+            return Material(
+              child: InkWell(
+                onTap: () {
+                  // Handle header row click
+                  print('Header clicked');
+                },
+                child: Container(
+                  // color: Colors.grey[300],
+                  child: Row(
+                    children: widget.headers.map((header) {
+                      return Container(
+                        width: 200,
+                        height: 50,
+                        child: Center(
+                          child:Text(
+                          header,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),),
+                      );
+                    }).toList(),
+                  ),
+                ),
               ),
-            ),
-          ));
-        } else {
-          // Data rows
-          final rowData = widget.data[index - 1]; // Subtract 1 to account for header row
-          return GestureDetector(
-            onTap: () {
-              // Handle data row click
-              print('Row $index clicked');
-            },
-            child: Container(
-              // color: index % 2 == 0 ? Colors.grey[200] : Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: rowData.map((item) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(item),
-                  );
-                }).toList(),
+            );
+          } else {
+            // Data rows
+            final rowData =
+                widget.data[index - 1]; // Subtract 1 to account for header row
+            return Material(
+              child: InkWell(
+                onTap: () {
+                  // Handle data row click
+                  print('Row $index clicked');
+                },
+                child: Container(
+                  // color: index % 2 == 0 ? Colors.grey[200] : Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: rowData.map((item) {
+                      return Container(
+                        width: 200,
+                        height: 50,
+                        child: Center(child: Text(item.toString())),
+                      );
+                    }).toList(),
+                  ),
+                ),
               ),
-            ),
-          );
-        }
-      },
+            );
+          }
+        },
+      ),
     );
   }
 }

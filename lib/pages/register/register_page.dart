@@ -1,4 +1,3 @@
-import 'package:blockchain/model/user.dart';
 import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:elegant_notification/elegant_notification.dart';
@@ -130,8 +129,6 @@ class _RegisterPageState extends State<RegisterPage> {
         "password":password
       };
       Response getResponse= await httpHelper.postRequest(BaseUrl+"/api/user",postData);
-      print(getResponse.data);
-      print(getResponse);
       ElegantNotification.success(
         title: Text("success"),
         description: Text("注册成功"),

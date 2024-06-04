@@ -19,11 +19,12 @@ class navigatorState extends State<navigator> {
   int index = 0;
   bool visable = true;
   PaneDisplayMode paneDisplayMode = PaneDisplayMode.open;
-  @override
-  void initState(){
-    super.initState();
 
+  @override
+  void initState() {
+    super.initState();
   }
+
   void handleIndexChanged(int newIndex) {
     setState(() {
       index = newIndex;
@@ -81,12 +82,11 @@ class navigatorState extends State<navigator> {
           ),
           PaneItemSeparator(),
           PaneItem(
-            icon: const Icon(FluentIcons.boards),
-            title: const Text('test'),
-            // infoBadge: const InfoBadge(source: Text('8')),
-            body: const Row(),
-            enabled: userModel.token==""
-          ),
+              icon: const Icon(FluentIcons.boards),
+              title: const Text('test'),
+              // infoBadge: const InfoBadge(source: Text('8')),
+              body: const Row(),
+              enabled: userModel.token == ""),
           PaneItem(
             icon: const Icon(FluentIcons.disable_updates),
             title: const Text('test2'),
@@ -99,13 +99,11 @@ class navigatorState extends State<navigator> {
             body: Container(
               child: IconButton(
                 icon: Icon(Icons.accessible_forward),
-                onPressed: () {
-
-                },
+                onPressed: () {},
               ),
             ),
             items: [
-              if (userModel.token=="")
+              if (userModel.token == "")
                 PaneItem(
                   icon: const Icon(FluentIcons.follow_user),
                   title: const Text('登录'),
@@ -113,7 +111,7 @@ class navigatorState extends State<navigator> {
                     navigateToNewPage: handleIndexChanged,
                   ),
                 ),
-              if (userModel.token=="")
+              if (userModel.token == "")
                 PaneItem(
                   icon: const Icon(FluentIcons.add_friend),
                   title: const Text('注册'),

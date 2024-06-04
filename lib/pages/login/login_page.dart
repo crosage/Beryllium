@@ -114,14 +114,12 @@ class _LoginPageState extends State<LoginPage> {
       Response getResponse= await httpHelper.postRequest(BaseUrl+"/api/user/login",postData);
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"]==200) {
-        // 请求成功，处理返回的数据
         var data = responseData["data"];
-        // print(data);
-        User now=User(data["token"],data["username"],data["usertype"]);
-        // 例如，打印用户信息
+        print(data);
+        User now=User(data["username"],data["usertype"],data["uid"],token:data["token"]);
+        print("**********");
         Provider.of<UserModel>(context, listen: false).updateUser(now);
       } else {
-        // 请求失败，打印错误信息
         print("Error: ${responseData["message"]}");
       }
 
