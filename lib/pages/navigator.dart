@@ -1,4 +1,5 @@
 import 'package:blockchain/pages/admin/admin_page.dart';
+import 'package:blockchain/pages/home/home_page.dart';
 import 'package:blockchain/pages/register/register_page.dart';
 import 'package:blockchain/pages/setting/setting_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -78,21 +79,9 @@ class navigatorState extends State<navigator> {
           PaneItem(
             icon: const Icon(FluentIcons.home),
             title: const Text('首页'),
-            body: const Row(),
+            body: Row(),
           ),
           PaneItemSeparator(),
-          PaneItem(
-              icon: const Icon(FluentIcons.boards),
-              title: const Text('test'),
-              // infoBadge: const InfoBadge(source: Text('8')),
-              body: const Row(),
-              enabled: userModel.token == ""),
-          PaneItem(
-            icon: const Icon(FluentIcons.disable_updates),
-            title: const Text('test2'),
-            body: const Row(),
-            enabled: false,
-          ),
           PaneItemExpander(
             icon: const Icon(FluentIcons.contact),
             title: const Text('我的账号'),
@@ -126,7 +115,25 @@ class navigatorState extends State<navigator> {
                   navigateToNewPage: handleIndexChanged,
                 ),
               ),
+              if (userModel.token != "")
+              PaneItem(
+                icon: const Icon(Icons.logout),
+                title: const Text('登出'),
+                body: Row(children: [Text("正在处理登出")],),
+                onTap: (){
+                  userModel.clearUser();
+                  handleIndexChanged(1);
+                }
+              ),
             ],
+          ),
+          PaneItem(
+              icon: const Icon(FluentIcons.history),
+              title: const Text('下载历史'),
+              body: RegisterPage(
+                navigateToNewPage: handleIndexChanged,
+              ),
+              enabled: userModel.token != ""
           ),
           PaneItem(
             icon: const Icon(FluentIcons.admin_a_logo32),
@@ -134,34 +141,15 @@ class navigatorState extends State<navigator> {
             body: AdminPage(
               navigateToNewPage: handleIndexChanged,
             ),
-            // enabled: false,
+            enabled: userModel.type==2,
           ),
         ],
         footerItems: [
           PaneItem(
             icon: const Icon(FluentIcons.settings),
-            title: const Text('Settings'),
+            title: const Text('设置'),
             body: SettingPage(navigateToNewPage: handleIndexChanged),
           ),
-          // PaneItemAction(
-          //   icon: const Icon(FluentIcons.add),
-          //   title: const Text('Add New Item'),
-          //   onTap: () {
-          //     // Your Logic to Add New `NavigationPaneItem`
-          //     items.add(
-          //       PaneItem(
-          //         icon: const Icon(FluentIcons.new_folder),
-          //         title: const Text('New Item'),
-          //         body: const Center(
-          //           child: Text(
-          //             'This is a newly added Item',
-          //           ),
-          //         ),
-          //       ),
-          //     );
-          //     setState(() {});
-          //   },
-          // ),
         ],
       ),
     );

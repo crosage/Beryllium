@@ -22,54 +22,63 @@ class _TableWidgetState extends State<TableWidget> {
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
             // Header row
-            return Material(
-              child: InkWell(
-                onTap: () {
-                  // Handle header row click
-                  print('Header clicked');
-                },
-                child: Container(
-                  // color: Colors.grey[300],
-                  child: Row(
-                    children: widget.headers.map((header) {
-                      return Container(
-                        width: 200,
-                        height: 50,
-                        child: Center(
-                          child:Text(
-                          header,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),),
-                      );
-                    }).toList(),
+            return Column(
+              children: [
+                Material(
+                  child: InkWell(
+                    onTap: () {
+                      // Handle header row click
+                      print('Header clicked');
+                    },
+                    child: Container(
+                      child: Row(
+                        children: widget.headers.map((header) {
+                          return Container(
+                            width: 200,
+                            height: 50,
+                            child: Center(
+                              child: Text(
+                                header,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Divider(), // Add a divider below the header row
+              ],
             );
           } else {
             // Data rows
             final rowData =
-                widget.data[index - 1]; // Subtract 1 to account for header row
-            return Material(
-              child: InkWell(
-                onTap: () {
-                  // Handle data row click
-                  print('Row $index clicked');
-                },
-                child: Container(
-                  // color: index % 2 == 0 ? Colors.grey[200] : Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: rowData.map((item) {
-                      return Container(
-                        width: 200,
-                        height: 50,
-                        child: Center(child: Text(item.toString())),
-                      );
-                    }).toList(),
+            widget.data[index - 1]; // Subtract 1 to account for header row
+            return Column(
+              children: [
+                Material(
+                  child: InkWell(
+                    onTap: () {
+                      // Handle data row click
+                      print('Row $index clicked');
+                    },
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: rowData.map((item) {
+                          return Container(
+                            width: 200,
+                            height: 50,
+                            child: Center(child: Text(item.toString())),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Divider(style: DividerThemeData(thickness: 2),),
+              ],
             );
           }
         },

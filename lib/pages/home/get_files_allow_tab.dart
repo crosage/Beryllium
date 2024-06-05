@@ -8,7 +8,7 @@ import '../../model/user.dart';
 import '../../service/request_with_token.dart';
 import '../../utils/config.dart';
 
-Tab createUsersTab(BuildContext context,Function onClosed) {
+Tab getFilesAllowTab(BuildContext context,Function onClosed) {
   final HttpHelper httpHelper = HttpHelper();
   final UserModel userModel = Provider.of<UserModel>(context, listen: false);
 
@@ -25,9 +25,7 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
     }
     return parsedUsers;
   }
-  void handleClose() {
-    onClosed();
-  }
+
   Future<List<ExtendedUser>> fetchData() async {
     try {
       Response getResponse = await httpHelper.getRequest(BaseUrl + "/api/user", token: userModel.token);
@@ -47,7 +45,6 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
   }
 
   return Tab(
-    onClosed: handleClose,
     text: Text("用户数据"),
     body: FutureBuilder<List<ExtendedUser>>(
       future: fetchData(),
