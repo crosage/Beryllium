@@ -1,4 +1,6 @@
 import 'package:blockchain/pages/admin/admin_page.dart';
+import 'package:blockchain/pages/file/file_allow_page.dart';
+import 'package:blockchain/pages/file/file_self_page.dart';
 import 'package:blockchain/pages/file/file_upload_page.dart';
 import 'package:blockchain/pages/home/home_page.dart';
 import 'package:blockchain/pages/register/register_page.dart';
@@ -155,7 +157,7 @@ class navigatorState extends State<navigator> {
                 PaneItem(
                   icon: const Icon(FluentIcons.download),
                   title: const Text('查看被共享文件'),
-                  body: RegisterPage(
+                  body: FileAllowPage(
                     navigateToNewPage: handleIndexChanged,
                   ),
                   enabled: userModel.token != ""
@@ -163,7 +165,7 @@ class navigatorState extends State<navigator> {
               PaneItem(
                 icon: const Icon(FluentIcons.open_file),
                 title: const Text('查看我上传的文件'),
-                body: LoginPage(
+                body: FileSelfPage(
                   navigateToNewPage: handleIndexChanged,
                 ),
                 enabled: userModel.token != ""

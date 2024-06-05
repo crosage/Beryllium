@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' show DataCell, DataRow, DataTable, Material, DataColumn;
+import 'package:flutter/material.dart' show Material;
 import 'package:provider/provider.dart';
 import '../../component/table_widget.dart';
 import '../../model/user.dart';
 import '../../service/request_with_token.dart';
 import '../../utils/config.dart';
+
+
 
 Tab getFilesAllowTab(BuildContext context,Function onClosed) {
   final HttpHelper httpHelper = HttpHelper();
@@ -28,7 +30,7 @@ Tab getFilesAllowTab(BuildContext context,Function onClosed) {
 
   Future<List<ExtendedUser>> fetchData() async {
     try {
-      Response getResponse = await httpHelper.getRequest(BaseUrl + "/api/user", token: userModel.token);
+      Response getResponse = await httpHelper.getRequest(BaseUrl + "/api/file/created-files", token: userModel.token);
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"] == 200) {
         var data = responseData["data"];
@@ -58,7 +60,7 @@ Tab getFilesAllowTab(BuildContext context,Function onClosed) {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No users found'));
+          return Center(child: Text('No files found'));
         } else {
           List<ExtendedUser> users = snapshot.data!;
           List<List<dynamic>> u=[];
