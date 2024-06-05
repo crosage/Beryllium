@@ -1,13 +1,10 @@
-import 'package:blockchain/model/user.dart';
-import 'package:dio/dio.dart';
+import 'package:blockchain/component/upload_file_icon.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:elegant_notification/elegant_notification.dart';
-import 'package:elegant_notification/resources/arrays.dart';
-import 'package:blockchain/component/required_text_field.dart';
 import 'package:blockchain/service/request_with_token.dart';
 import 'package:blockchain/utils/config.dart';
-import 'package:flutter/material.dart'
-    show DataCell, DataColumn, DataRow, DataTable, Material;
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../model/user.dart';
 
 class SettingPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
@@ -62,19 +59,14 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserModel userModel = Provider.of<UserModel>(context, listen: false);
     return ScaffoldPage.withPadding(
       padding: EdgeInsets.only(bottom: 0),
       content: Material(
-        child: DataTable(
-          sortColumnIndex: 1,
-          sortAscending: true,
-          columns: [
-            DataColumn(label: Text('姓名')),
-            DataColumn(
-              label: Text('年龄'),
-            ),
-          ],
-          rows: _buildDataRows(),
+        child: UploadFileIcon(
+          url: BaseUrl+"/api/file/upload",
+          token: userModel.token,
+          size: 96,
         ),
       ),
     );

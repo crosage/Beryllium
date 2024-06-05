@@ -1,4 +1,5 @@
 import 'package:blockchain/pages/admin/admin_page.dart';
+import 'package:blockchain/pages/file/file_upload_page.dart';
 import 'package:blockchain/pages/home/home_page.dart';
 import 'package:blockchain/pages/register/register_page.dart';
 import 'package:blockchain/pages/setting/setting_page.dart';
@@ -145,7 +146,7 @@ class navigatorState extends State<navigator> {
                 PaneItem(
                   icon: const Icon(FluentIcons.upload),
                   title: const Text('文件上传'),
-                  body: LoginPage(
+                  body: FileUploadPage(
                     navigateToNewPage: handleIndexChanged,
                   ),
                   enabled:userModel.token != ""
