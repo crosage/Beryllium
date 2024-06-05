@@ -21,7 +21,7 @@ class HttpHelper{
     }
   }
 
-  Future<Response> postRequest(String url,dynamic data,{String? token})async{
+  Future<Response> postRequest(String url, dynamic data, {String? token}) async {
     try {
       if (token != null) {
         _dio.options.headers['Authorization'] = 'Bearer $token';
@@ -29,11 +29,22 @@ class HttpHelper{
         _dio.options.headers.remove('Authorization');
       }
       Response response = await _dio.post(url, data: data);
+      print(response);
       return response;
     } catch (e) {
-      return Future.error(e);
+      if (e is DioException) {
+        if (e.response?.statusCode == 403) {
+          print('发生403错误：${e.message}');
+          return e.response!;
+        } else {
+          return Future.error(e);
+        }
+      } else {
+        return Future.error(e);
+      }
     }
   }
+
   Future<Response> uploadFile(String url, String filePath, {String? token}) async {
     try {
       if (token != null) {

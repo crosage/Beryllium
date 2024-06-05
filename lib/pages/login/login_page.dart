@@ -112,6 +112,8 @@ class _LoginPageState extends State<LoginPage> {
         "password":password
       };
       Response getResponse= await httpHelper.postRequest(BaseUrl+"/api/user/login",postData);
+      print(getResponse.statusCode);
+      print("**************************");
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"]==200) {
         var data = responseData["data"];
@@ -119,16 +121,22 @@ class _LoginPageState extends State<LoginPage> {
         User now=User(data["username"],data["usertype"],data["uid"],token:data["token"]);
         print("**********");
         Provider.of<UserModel>(context, listen: false).updateUser(now);
+        ElegantNotification.success(
+          title: Text("success"),
+          description: Text("登录成功"),
+          animation: AnimationType.fromTop,
+        ).show(context);
+        widget.navigateToNewPage(0);
       } else {
+        ElegantNotification.error(
+          title: Text("error"),
+          description: Text(responseData["message"]),
+          animation: AnimationType.fromTop,
+        ).show(context);
         print("Error: ${responseData["message"]}");
       }
 
-      ElegantNotification.success(
-        title: Text("success"),
-        description: Text("登录成功"),
-        animation: AnimationType.fromTop,
-      ).show(context);
-      widget.navigateToNewPage(0);
+
     }catch(e){
       print(e);
       ElegantNotification.error(
