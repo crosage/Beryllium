@@ -81,4 +81,9 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+  @override
+  void dispose() {
+    print('disposed');
+    super.dispose();
+  }
 }

@@ -32,6 +32,7 @@ Tab getFilesAllowTab(BuildContext context,Function onClosed) {
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"] == 200) {
         var data = responseData["data"];
+        print(data);
         List<ExtendedUser> parsedUsers = _parseUsers(data["users"]);
         return parsedUsers;
       } else {
@@ -43,8 +44,11 @@ Tab getFilesAllowTab(BuildContext context,Function onClosed) {
       return [];
     }
   }
-
+  void handleClose() {
+    onClosed();
+  }
   return Tab(
+    onClosed: handleClose,
     text: Text("用户数据"),
     body: FutureBuilder<List<ExtendedUser>>(
       future: fetchData(),

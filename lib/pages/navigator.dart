@@ -48,7 +48,9 @@ class navigatorState extends State<navigator> {
       ),
       pane: NavigationPane(
         selected: index,
-        onChanged: (newIndex) => setState(() => index = newIndex),
+        onChanged: (newIndex) => setState(() {
+          index=newIndex;
+        }),
         header: Visibility(
           visible: visable,
           child: IconButton(
@@ -79,7 +81,9 @@ class navigatorState extends State<navigator> {
           PaneItem(
             icon: const Icon(FluentIcons.home),
             title: const Text('首页'),
-            body: Row(),
+            body: HomePage(
+              navigateToNewPage: handleIndexChanged,
+            ),
           ),
           PaneItemSeparator(),
           PaneItemExpander(
@@ -127,14 +131,53 @@ class navigatorState extends State<navigator> {
               ),
             ],
           ),
-          PaneItem(
-              icon: const Icon(FluentIcons.history),
-              title: const Text('下载历史'),
-              body: RegisterPage(
-                navigateToNewPage: handleIndexChanged,
+          PaneItemExpander(
+            icon: const Icon(FluentIcons.file_request),
+            title: const Text('文件'),
+            body: Container(
+              child: IconButton(
+                icon: Icon(Icons.accessible_forward),
+                onPressed: () {},
               ),
-              enabled: userModel.token != ""
+            ),
+
+            items: [
+                PaneItem(
+                  icon: const Icon(FluentIcons.upload),
+                  title: const Text('文件上传'),
+                  body: LoginPage(
+                    navigateToNewPage: handleIndexChanged,
+                  ),
+                  enabled:userModel.token != ""
+                ),
+
+                PaneItem(
+                  icon: const Icon(FluentIcons.download),
+                  title: const Text('查看被共享文件'),
+                  body: RegisterPage(
+                    navigateToNewPage: handleIndexChanged,
+                  ),
+                  enabled: userModel.token != ""
+                ),
+              PaneItem(
+                icon: const Icon(FluentIcons.open_file),
+                title: const Text('查看我上传的文件'),
+                body: LoginPage(
+                  navigateToNewPage: handleIndexChanged,
+                ),
+                enabled: userModel.token != ""
+              ),
+              PaneItem(
+                  icon: const Icon(FluentIcons.history),
+                  title: const Text('下载历史'),
+                  body: RegisterPage(
+                    navigateToNewPage: handleIndexChanged,
+                  ),
+                  enabled: userModel.token != ""
+              ),
+            ],
           ),
+
           PaneItem(
             icon: const Icon(FluentIcons.admin_a_logo32),
             title: const Text('管理员界面'),
