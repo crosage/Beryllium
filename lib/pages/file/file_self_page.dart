@@ -35,7 +35,6 @@ class _FileSelfPageState extends State<FileSelfPage> {
     for (var fileData in filesData) {
       parseFiles.add(
         FileModel(
-
           fileData["fid"],
           fileData["hash"],
           fileData["name"],
@@ -70,40 +69,41 @@ class _FileSelfPageState extends State<FileSelfPage> {
       // Handle error
       return [];
     }
+
   }
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage.withPadding(
-        padding: EdgeInsets.only(bottom: 0),
-        content: FutureBuilder<List<FileModel>>(
-          future: fetchData(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: ProgressRing());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              List<FileModel>? files = snapshot.data;
-              print(files);
-              if (files != null && files.isNotEmpty) {
-                // Render your UI with the fetched data
-                List<List<String>> filesToString = [];
-                for (var file in files) {
-                  List<String> tmp = [];
-                  tmp.add(file.fid.toString());
-                  tmp.add(file.name);
-                  tmp.add(file.shareCode);
-                  filesToString.add(tmp);
-                }
-                return TableWidget(
-                    headers: ["文件id", "文件名称", "文件共享码"],
-                    data: filesToString);
-              } else {
-                return Center(child: Text('No data available'));
+      padding: EdgeInsets.only(bottom: 0),
+      content: FutureBuilder<List<FileModel>>(
+        future: fetchData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: ProgressRing());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            List<FileModel>? files = snapshot.data;
+            print(files);
+            if (files != null && files.isNotEmpty) {
+              // Render your UI with the fetched data
+              List<List<String>> filesToString = [];
+              for (var file in files) {
+                List<String> tmp = [];
+                tmp.add(file.fid.toString());
+                tmp.add(file.name);
+                tmp.add(file.shareCode);
+                filesToString.add(tmp);
               }
+              return TableWidget(
+                  headers: ["文件id", "文件名称", "文件共享码"], data: filesToString);
+            } else {
+              return Center(child: Text('No data available'));
             }
-          },
-        ));
+          }
+        },
+      ),
+    );
   }
 }
