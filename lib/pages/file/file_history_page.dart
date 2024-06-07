@@ -15,7 +15,7 @@ class FileHistoryPage extends StatefulWidget {
 class _FileHistoryPageState extends State<FileHistoryPage> {
   int currentIndex = 0;
   List<Tab> tabs = [];
-  List<ExtendedUser> users = [];
+  List<User> users = [];
 
   @override
   void initState() {

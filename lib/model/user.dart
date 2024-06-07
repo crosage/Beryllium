@@ -8,15 +8,33 @@ class User {
   int userType;
   int uid;
 
-  User(this.username, this.userType, this.uid,{this.token});
+  User({
+    required this.username,
+    required this.userType,
+    required this.uid,
+    this.token,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      token: json['token'],
+      username: json['username'],
+      userType: json['usertype'],
+      uid: json['uid'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['token'] = this.token;
+    data['username'] = this.username;
+    data['usertype'] = this.userType;
+    data['uid'] = this.uid;
+    return data;
+  }
 }
 
-class ExtendedUser extends User {
-  bool selected;
 
-  ExtendedUser(String username, int userType, int uid, {String? token, this.selected = false})
-      : super(username, userType, uid, token: token);
-}
 
 
 class UserModel with ChangeNotifier {

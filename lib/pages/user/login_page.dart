@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
       if (responseData["code"]==200) {
         var data = responseData["data"];
         print(data);
-        User now=User(data["username"],data["usertype"],data["uid"],token:data["token"]);
+        User now=User.fromJson(data);
         Provider.of<UserModel>(context, listen: false).updateUser(now);
         ElegantNotification.success(
           title: Text("success"),

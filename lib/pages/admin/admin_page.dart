@@ -14,7 +14,7 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
   int currentIndex = 0;
   List<Tab> tabs = [];
-  List<ExtendedUser> users = [];
+  List<User> users = [];
 
   @override
   void initState() {

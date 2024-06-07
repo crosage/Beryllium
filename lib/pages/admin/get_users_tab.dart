@@ -12,15 +12,11 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
   final HttpHelper httpHelper = HttpHelper();
   final UserModel userModel = Provider.of<UserModel>(context, listen: false);
 
-  List<ExtendedUser> _parseUsers(List<dynamic> usersData) {
-    List<ExtendedUser> parsedUsers = [];
+  List<User> _parseUsers(List<dynamic> usersData) {
+    List<User> parsedUsers = [];
     for (var userData in usersData) {
       parsedUsers.add(
-        ExtendedUser(
-          userData["username"],
-          userData["type"],
-          userData["uid"],
-        ),
+        User.fromJson(userData)
       );
     }
     return parsedUsers;
@@ -28,13 +24,13 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
   void handleClose() {
     onClosed();
   }
-  Future<List<ExtendedUser>> fetchData() async {
+  Future<List<User>> fetchData() async {
     try {
       Response getResponse = await httpHelper.getRequest(BaseUrl + "/api/user", token: userModel.token);
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"] == 200) {
         var data = responseData["data"];
-        List<ExtendedUser> parsedUsers = _parseUsers(data["users"]);
+        List<User> parsedUsers = _parseUsers(data["users"]);
         return parsedUsers;
       } else {
         // Handle response code not 200
@@ -49,7 +45,7 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
   return Tab(
     onClosed: handleClose,
     text: Text("用户数据"),
-    body: FutureBuilder<List<ExtendedUser>>(
+    body: FutureBuilder<List<User>>(
       future: fetchData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -59,7 +55,7 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('No users found'));
         } else {
-          List<ExtendedUser> users = snapshot.data!;
+          List<User> users = snapshot.data!;
           List<List<dynamic>> u=[];
           for (var user in users){
             List<dynamic> now=[];

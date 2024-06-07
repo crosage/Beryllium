@@ -33,18 +33,11 @@ class _FileSelfPageState extends State<FileSelfPage> {
   List<FileModel> _parseFiles(List<dynamic> filesData) {
     List<FileModel> parseFiles = [];
     for (var fileData in filesData) {
-      parseFiles.add(
-        FileModel(
-          fileData["fid"],
-          fileData["hash"],
-          fileData["name"],
-          fileData["uid"],
-          fileData["share_code"],
-        ),
-      );
+      parseFiles.add(FileModel.fromJson(fileData));
     }
     return parseFiles;
   }
+
 
   Future<List<FileModel>> fetchData() async {
     try {

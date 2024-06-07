@@ -38,14 +38,11 @@ class _FileAllowPageState extends State<FileAllowPage> {
   List<FileModel> _parseFiles(List<dynamic> filesData) {
     List<FileModel> parseFiles = [];
     for (var fileData in filesData) {
-      parseFiles.add(
-        FileModel(fileData["fid"], fileData["hash"], fileData["name"],
-            fileData["uid"], fileData["share_code"],
-            username: fileData["username"]),
-      );
+      parseFiles.add(FileModel.fromJson(fileData));
     }
     return parseFiles;
   }
+
 
   Future<List<FileModel>> fetchData() async {
     try {
@@ -55,6 +52,7 @@ class _FileAllowPageState extends State<FileAllowPage> {
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"] == 200) {
         var data = responseData["data"];
+        print(data["files"]);
         List<FileModel> parseFiles = _parseFiles(data["files"]);
         return parseFiles;
       } else {
