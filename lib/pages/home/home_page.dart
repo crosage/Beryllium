@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:fluent_ui/fluent_ui.dart';
 import '../../model/user.dart';
-import 'get_files_allow_tab.dart';
 
 class HomePage extends StatefulWidget {
   final Function(int) navigateToNewPage;
@@ -22,10 +21,7 @@ class _HomePageState extends State<HomePage> {
     // 每次初始化时清空tabs
     tabs = [];
     late Tab tab;
-    tab=getFilesAllowTab(context,(){        setState(() {
-      tabs!.remove(tab);
-      if (currentIndex > 0) currentIndex--;
-    });});
+    tab=generateTab(0);
     tabs.add(tab);
   }
 

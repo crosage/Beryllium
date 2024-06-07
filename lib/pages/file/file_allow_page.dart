@@ -98,7 +98,9 @@ class _FileAllowPageState extends State<FileAllowPage> {
                     }
                     return TableWidget(
                         headers: ["文件id", "文件名称", "文件所属用户", "文件共享码"],
-                        data: filesToString);
+                        data: filesToString,onRowTap: (index,header){
+
+                    },);
                   } else {
                     return Center(child: Text('No data available'));
                   }

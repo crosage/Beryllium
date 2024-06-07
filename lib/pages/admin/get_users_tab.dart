@@ -72,7 +72,9 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
             width: 5000,
             height: 5000,
             child: Material(
-              child: TableWidget(headers: ["用户id","用户名称","用户型"], data: u),
+              child: TableWidget(headers: ["用户id","用户名称","用户型"], data: u,onRowTap: (index,header){
+
+              },),
             ),
           );
         }

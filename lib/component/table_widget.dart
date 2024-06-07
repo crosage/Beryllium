@@ -4,9 +4,14 @@ import 'package:flutter/material.dart' show Material, InkWell;
 class TableWidget extends StatefulWidget {
   final List<dynamic> headers;
   final List<List<dynamic>> data;
+  final void Function(int index, bool isHeader) onRowTap;
 
-  TableWidget({Key? key, required this.headers, required this.data})
-      : super(key: key);
+  TableWidget({
+    Key? key,
+    required this.headers,
+    required this.data,
+    required this.onRowTap,
+  }) : super(key: key);
 
   @override
   _TableWidgetState createState() => _TableWidgetState();
@@ -27,8 +32,7 @@ class _TableWidgetState extends State<TableWidget> {
                 Material(
                   child: InkWell(
                     onTap: () {
-                      // Handle header row click
-                      print('Header clicked');
+                      widget.onRowTap(index, true); // Pass index and header flag
                     },
                     child: Container(
                       child: Row(
@@ -60,8 +64,7 @@ class _TableWidgetState extends State<TableWidget> {
                 Material(
                   child: InkWell(
                     onTap: () {
-                      // Handle data row click
-                      print('Row $index clicked');
+                      widget.onRowTap(index - 1, false); // Pass index and header flag
                     },
                     child: Container(
                       child: Row(

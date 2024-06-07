@@ -97,7 +97,9 @@ class _FileSelfPageState extends State<FileSelfPage> {
                 filesToString.add(tmp);
               }
               return TableWidget(
-                  headers: ["文件id", "文件名称", "文件共享码"], data: filesToString);
+                  headers: ["文件id", "文件名称", "文件共享码"], data: filesToString,onRowTap: (index,header){
+
+              },);
             } else {
               return Center(child: Text('No data available'));
             }
