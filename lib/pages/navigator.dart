@@ -171,8 +171,8 @@ class navigatorState extends State<navigator> {
                 enabled: userModel.token != ""
               ),
               PaneItem(
-                  icon: const Icon(FluentIcons.history),
-                  title: const Text('下载历史'),
+                  icon: const Icon(FluentIcons.delve_analytics_logo),
+                  title: const Text('文件操作记录'),
                   body: RegisterPage(
                     navigateToNewPage: handleIndexChanged,
                   ),

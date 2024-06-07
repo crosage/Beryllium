@@ -1,74 +1,109 @@
-import 'package:blockchain/component/upload_file_icon.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart' show Icons, Material, TextField;
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:blockchain/service/request_with_token.dart';
-import 'package:blockchain/utils/config.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../model/user.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SettingPage extends StatefulWidget {
   final Function(int) navigateToNewPage;
 
-  SettingPage(
-      {Key? key,
-        required this.navigateToNewPage,})
-      : super(key: key);
+  SettingPage({Key? key, required this.navigateToNewPage}) : super(key: key);
 
   @override
   _SettingPageState createState() => _SettingPageState();
 }
 
-class UUser {
-  UUser(this.name, this.age, {this.selected = false});
-
-  String name;
-  int age;
-  bool selected;
-}
-
 class _SettingPageState extends State<SettingPage> {
-  HttpHelper httpHelper = HttpHelper();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _checkController = TextEditingController();
+  String _savePath = '';
+  late TextEditingController _controller;
 
-  List<UUser> data = [
-    UUser('老孟', 18),
-    UUser('老孟1', 19, selected: true),
-    UUser('老孟2', 20),
-    UUser('老孟3', 21),
-    UUser('老孟4', 22),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    _loadConfig();
+  }
 
-  List<DataRow> _buildDataRows() {
-    return data.map((user) {
-      return DataRow(
-        selected: user.selected,
-        onSelectChanged: (selected) {
-          setState(() {
-            user.selected = selected ?? false;
-          });
-        },
-        cells: [
-          DataCell(Text('${user.name}')),
-          DataCell(Text('${user.age}')),
-        ],
-      );
-    }).toList();
+  Future<void> _loadConfig() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final configDirectory = Directory('${directory.path}');
+    final file = File('${configDirectory.path}/config.json');
+
+    // Create directory if it doesn't exist
+    if (!await configDirectory.exists()) {
+      await configDirectory.create(recursive: true);
+    }
+
+    print(directory.path);
+    if (await file.exists()) {
+      final contents = await file.readAsString();
+      final config = jsonDecode(contents);
+      print(config);
+      setState(() {
+        _savePath = config['savePath'] ?? '${file.path}';
+        _controller.text = _savePath; // Set text from saved config
+      });
+    } else {
+      final config = {'savePath': '${file.path}'};
+      await file.writeAsString(jsonEncode(config));
+      setState(() {
+        _savePath = config['savePath']!;
+        _controller.text = _savePath; // Set default text
+      });
+    }
+  }
+
+  Future<void> _saveConfig() async {
+    print("*********");
+    final directory = await getApplicationDocumentsDirectory();
+    final configDirectory = Directory('${directory.path}');
+    final file = File('${configDirectory.path}/config.json');
+
+    final config = {'savePath': _controller.text};
+    await file.writeAsString(jsonEncode(config));
   }
 
   @override
   Widget build(BuildContext context) {
-    final UserModel userModel = Provider.of<UserModel>(context, listen: false);
-    return ScaffoldPage.withPadding(
-      padding: EdgeInsets.only(bottom: 0),
-      content: Material(
-        child: UploadFileIcon(
-          url: BaseUrl+"/api/file/upload",
-          token: userModel.token,
-          size: 96,
-        ),
+    return ScaffoldPage(
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Material(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.save),
+                Text("文件保存路径:  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                Container(
+                  child: TextField(
+                    controller: _controller,
+                    onChanged: (value) {
+                      setState(() {
+                        _savePath = value;
+                      });
+                    },
+                    onSubmitted: (value) {
+
+                    },
+                  ),
+                  width: 500,
+                ),
+                IconButton(icon: Icon(Icons.check,size: 20,), onPressed: (){_saveConfig();})
+              ],
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

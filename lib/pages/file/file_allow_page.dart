@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:blockchain/model/file.dart';
 import 'package:dio/dio.dart';
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:elegant_notification/resources/arrays.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart'
     show FloatingActionButton, Icons, SizedBox;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import '../../component/table_widget.dart';
 import '../../model/user.dart';
@@ -52,16 +56,11 @@ class _FileAllowPageState extends State<FileAllowPage> {
       if (responseData["code"] == 200) {
         var data = responseData["data"];
         List<FileModel> parseFiles = _parseFiles(data["files"]);
-        print(data);
-
-        // return parsedUsers;
         return parseFiles;
       } else {
-        // Handle response code not 200
         return [];
       }
     } catch (e) {
-      // Handle error
       return [];
     }
   }
@@ -84,7 +83,7 @@ class _FileAllowPageState extends State<FileAllowPage> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
                   List<FileModel>? files = snapshot.data;
-                  print(files);
+                  // print(files);
                   if (files != null && files.isNotEmpty) {
                     // Render your UI with the fetched data
                     List<List<String>> filesToString = [];
@@ -97,9 +96,30 @@ class _FileAllowPageState extends State<FileAllowPage> {
                       filesToString.add(tmp);
                     }
                     return TableWidget(
-                        headers: ["文件id", "文件名称", "文件所属用户", "文件共享码"],
-                        data: filesToString,onRowTap: (index,header){
 
+                        headers: ["文件id", "文件名称", "文件所属用户", "文件共享码"],
+                        data: filesToString,onRowTap: (index,header) async{
+                        Directory appDocDir = await getApplicationDocumentsDirectory();
+
+                        Directory userDataDir = Directory('${appDocDir.path}/user_data');
+
+                        String savePath = userDataDir.path+"/"+files[index].name;
+                        await httpHelper.downloadFile(
+                          BaseUrl+"/api/file/"+files[index].fid.toString(),
+                          savePath,
+                          token: userModel.token,
+                        );
+                        setState(() {
+                          ElegantNotification.success(
+                            title: Text("success"),
+                            description: Text("下载文件成功"),
+                            animation: AnimationType.fromTop,
+                          ).show(context);
+                        });
+                          print("*******************************");
+                          print(files[index].name);
+                          print(files[index].username);
+                          print("*******************************");
                     },);
                   } else {
                     return Center(child: Text('No data available'));
