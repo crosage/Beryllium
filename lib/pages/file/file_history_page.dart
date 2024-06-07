@@ -85,7 +85,6 @@ class _FileHistoryPageState extends State<FileHistoryPage> {
   }
   @override
   Widget build(BuildContext context) {
-    print("重建！！！！！！！！！！！！！！！");
     return TabView(
       tabs: tabs!,
       currentIndex: currentIndex,

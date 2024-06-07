@@ -22,17 +22,11 @@ Tab allFileTab(BuildContext context,Function onClosed,String type) {
         'operationtype': type,
         "pagesize":500
       };
-      print("###############################");
       Response getResponse = await httpHelper.getRequest(BaseUrl + "/api/file/file-changelog",params: params, token: userModel.token);
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
-      print("respon****************");
-      print(responseData);
-      print(getResponse.statusCode);
       if (responseData["code"] == 200) {
         var data = responseData["data"];
-        print("1233333333333333333333333333333333333333333");
         List<LogEntry> parsedLogs = List<LogEntry>.from(data["filelog"].map((entry) => LogEntry.fromJson(entry)));
-        print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
         return parsedLogs;
       } else {
         // Handle response code not 200

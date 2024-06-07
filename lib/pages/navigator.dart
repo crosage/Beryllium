@@ -43,10 +43,6 @@ class navigatorState extends State<navigator> {
     print(userModel.token);
     return NavigationView(
       onOpenSearch: () {
-        print("OPENSEARCH");
-      },
-      onDisplayModeChanged: (pan) {
-        print("******************* $pan");
       },
       appBar: const NavigationAppBar(
         title: Text('NavigationView'),

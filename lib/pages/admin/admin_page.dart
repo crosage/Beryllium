@@ -49,7 +49,6 @@ class _AdminPageState extends State<AdminPage> {
   }
   @override
   Widget build(BuildContext context) {
-    print("重建！！！！！！！！！！！！！！！");
     return TabView(
       tabs: tabs!,
       currentIndex: currentIndex,

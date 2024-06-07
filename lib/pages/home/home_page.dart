@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    print("重建！！！！！！！！！！！！！！！");
     return TabView(
       tabs: tabs!,
       currentIndex: currentIndex,
@@ -79,7 +78,6 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   void dispose() {
-    print('disposed');
     super.dispose();
   }
 }

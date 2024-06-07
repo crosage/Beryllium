@@ -54,8 +54,6 @@ class UserModel with ChangeNotifier {
   }
 
   void updateUser(User user) {
-    print("*********");
-    print(user.uid);
     _token = user.token ?? "";
     _type = user.userType ?? 0;
     _name = user.username ?? "";

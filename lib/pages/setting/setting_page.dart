@@ -54,11 +54,9 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> _saveConfig() async {
-    print("*********");
     final directory = await getApplicationDocumentsDirectory();
     final configDirectory = Directory('${directory.path}');
     final file = File('${configDirectory.path}/config.json');
-
     final config = {'savePath': _controller.text};
     await file.writeAsString(jsonEncode(config));
   }

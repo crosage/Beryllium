@@ -52,21 +52,14 @@ class _FileSelfPageState extends State<FileSelfPage> {
           BaseUrl + "/api/file/created-files",
           token: userModel.token);
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
-      print(responseData);
-      print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
       if (responseData["code"] == 200) {
         var data = responseData["data"];
         List<FileModel> parseFiles = _parseFiles(data["files"]);
-        print(data);
-
-        print("####################################3");
         return parseFiles;
       } else {
-        // Handle response code not 200
         return [];
       }
     } catch (e) {
-      // Handle error
       return [];
     }
 
@@ -85,9 +78,7 @@ class _FileSelfPageState extends State<FileSelfPage> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             List<FileModel>? files = snapshot.data;
-            print(files);
             if (files != null && files.isNotEmpty) {
-              // Render your UI with the fetched data
               List<List<String>> filesToString = [];
               for (var file in files) {
                 List<String> tmp = [];
@@ -98,7 +89,6 @@ class _FileSelfPageState extends State<FileSelfPage> {
               }
               return TableWidget(
                   headers: ["文件id", "文件名称", "文件共享码"], data: filesToString,onRowTap: (index,header){
-
               },);
             } else {
               return Center(child: Text('No data available'));

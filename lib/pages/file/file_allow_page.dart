@@ -116,10 +116,6 @@ class _FileAllowPageState extends State<FileAllowPage> {
                             animation: AnimationType.fromTop,
                           ).show(context);
                         });
-                          print("*******************************");
-                          print(files[index].name);
-                          print(files[index].username);
-                          print("*******************************");
                     },);
                   } else {
                     return Center(child: Text('No data available'));

@@ -112,14 +112,11 @@ class _LoginPageState extends State<LoginPage> {
         "password":password
       };
       Response getResponse= await httpHelper.postRequest(BaseUrl+"/api/user/login",postData);
-      print(getResponse.statusCode);
-      print("**************************");
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"]==200) {
         var data = responseData["data"];
         print(data);
         User now=User(data["username"],data["usertype"],data["uid"],token:data["token"]);
-        print("**********");
         Provider.of<UserModel>(context, listen: false).updateUser(now);
         ElegantNotification.success(
           title: Text("success"),

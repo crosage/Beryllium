@@ -33,22 +33,16 @@ class _SearchBarState extends State<SearchTool> {
   void _updateFilteredOptions(String query) {
     setState(() {
       if (query.isEmpty) {
-        print(1);
         _filteredOptions = [];
-        print(_overlayEntry);
-        print(_overlayEntry == null);
         if (_overlayEntry != null) {
-          print("我要remove了");
           removeAllOverlays();
           _overlayEntry = null;
         }
       } else {
-        print(2);
         _filteredOptions = widget.suggestions
             .where(
                 (option) => option.toLowerCase().contains(query.toLowerCase()))
             .toList();
-        print("我要show了");
         showOverlayFunction(context);
       }
     });
