@@ -3,7 +3,7 @@ import 'package:blockchain/pages/file/file_allow_page.dart';
 import 'package:blockchain/pages/file/file_self_page.dart';
 import 'package:blockchain/pages/file/file_upload_page.dart';
 import 'package:blockchain/pages/home/home_page.dart';
-import 'package:blockchain/pages/register/register_page.dart';
+import 'package:blockchain/pages/user/register_page.dart';
 import 'package:blockchain/pages/setting/setting_page.dart';
 import 'package:blockchain/pages/user/user_info_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart' show Icons;
 import 'package:blockchain/model/user.dart';
 import 'package:provider/provider.dart';
 import 'file/file_history_page.dart';
-import 'login/login_page.dart';
+import 'user/login_page.dart';
 
 class navigator extends StatefulWidget {
   @override
