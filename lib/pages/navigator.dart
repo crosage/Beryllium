@@ -5,10 +5,12 @@ import 'package:blockchain/pages/file/file_upload_page.dart';
 import 'package:blockchain/pages/home/home_page.dart';
 import 'package:blockchain/pages/register/register_page.dart';
 import 'package:blockchain/pages/setting/setting_page.dart';
+import 'package:blockchain/pages/user/user_info_page.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' show Icons;
 import 'package:blockchain/model/user.dart';
 import 'package:provider/provider.dart';
+import 'file/file_history_page.dart';
 import 'login/login_page.dart';
 
 class navigator extends StatefulWidget {
@@ -84,8 +86,11 @@ class navigatorState extends State<navigator> {
           PaneItem(
             icon: const Icon(FluentIcons.home),
             title: const Text('首页'),
-            body: HomePage(
-              navigateToNewPage: handleIndexChanged,
+            body: Container(
+              child: IconButton(
+                icon: Icon(FluentIcons.remove_link_chain,size: 500,),
+                onPressed: () {},
+              ),
             ),
           ),
           PaneItemSeparator(),
@@ -118,7 +123,7 @@ class navigatorState extends State<navigator> {
               PaneItem(
                 icon: const Icon(FluentIcons.account_management),
                 title: const Text('个人信息设置'),
-                body: LoginPage(
+                body: UserInfoPage(
                   navigateToNewPage: handleIndexChanged,
                 ),
               ),
@@ -173,7 +178,7 @@ class navigatorState extends State<navigator> {
               PaneItem(
                   icon: const Icon(FluentIcons.delve_analytics_logo),
                   title: const Text('文件操作记录'),
-                  body: RegisterPage(
+                  body: FileHistoryPage(
                     navigateToNewPage: handleIndexChanged,
                   ),
                   enabled: userModel.token != ""

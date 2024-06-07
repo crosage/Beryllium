@@ -7,14 +7,14 @@ class HttpHelper{
     _dio = Dio(BaseOptions());
   }
 
-  Future<Response> getRequest(String url, {String? token}) async {
+  Future<Response> getRequest(String url, {String? token, Map<String, dynamic>? params}) async {
     try {
       if (token != null) {
         _dio.options.headers['Authorization'] = 'Bearer $token';
       } else {
         _dio.options.headers.remove('Authorization');
       }
-      Response response = await _dio.get(url);
+      Response response = await _dio.get(url, queryParameters: params);
       return response;
     } catch (e) {
       return Future.error(e);
