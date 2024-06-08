@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
           description: Text("登录成功"),
           animation: AnimationType.fromTop,
         ).show(context);
-        widget.navigateToNewPage(0);
+        widget.navigateToNewPage(6);
       } else {
         ElegantNotification.error(
           title: Text("error"),

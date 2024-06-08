@@ -9,6 +9,7 @@ import 'package:flutter/material.dart'
     show FloatingActionButton, Icons, SizedBox;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import '../../component/search_tool.dart';
 import '../../component/table_widget.dart';
 import '../../model/user.dart';
 import '../../service/request_with_token.dart';
@@ -62,6 +63,29 @@ class _FileAllowPageState extends State<FileAllowPage> {
       return [];
     }
   }
+  Future<List<FileModel>> getSuggestions() async {
+    try {
+      final params = {
+        "pagesize": 50000
+      };
+      Response getResponse = await httpHelper.getRequest(
+          BaseUrl + "/api/file/search-files",
+          token: userModel.token,
+          params: params
+      );
+      Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
+      if (responseData["code"] == 200) {
+        var data = responseData["data"];
+        print(data["files"]);
+        List<FileModel> parseFiles = _parseFiles(data["files"]);
+        return parseFiles;
+      } else {
+        return [];
+      }
+    }catch(e){
+      return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +94,18 @@ class _FileAllowPageState extends State<FileAllowPage> {
       padding: EdgeInsets.only(bottom: 0),
       content: Column(
         children: [
+          // FutureBuilder<List<FileModel>>(
+          //     future: getSuggestions(),
+          //     builder: (context, snapshot) {
+          //       if (!snapshot.hasData) {
+          //         return Center(child: ProgressRing());
+          //       } else {
+          //         // print(snapshot.data!);
+          //         return SearchTool(
+          //             onSelected: _searchTag,
+          //             suggestions: snapshot.data!);
+          //       }
+          //     }),
           Container(
             height: 500,
             child: FutureBuilder<List<FileModel>>(

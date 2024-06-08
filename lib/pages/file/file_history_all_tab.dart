@@ -20,7 +20,7 @@ Tab allFileTab(BuildContext context,Function onClosed,String type) {
     try {
       final params = {
         'operationtype': type,
-        "pagesize":500
+        "pagesize":50000
       };
       Response getResponse = await httpHelper.getRequest(BaseUrl + "/api/file/file-changelog",params: params, token: userModel.token);
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());

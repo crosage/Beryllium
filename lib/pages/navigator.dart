@@ -42,15 +42,14 @@ class navigatorState extends State<navigator> {
     userModel = Provider.of<UserModel>(context, listen: true);
     print(userModel.token);
     return NavigationView(
-      onOpenSearch: () {
-      },
+      onOpenSearch: () {},
       appBar: const NavigationAppBar(
         title: Text('NavigationView'),
       ),
       pane: NavigationPane(
         selected: index,
         onChanged: (newIndex) => setState(() {
-          index=newIndex;
+          index = newIndex;
         }),
         header: Visibility(
           visible: visable,
@@ -83,9 +82,26 @@ class navigatorState extends State<navigator> {
             icon: const Icon(FluentIcons.home),
             title: const Text('首页'),
             body: Container(
-              child: IconButton(
-                icon: Icon(FluentIcons.remove_link_chain,size: 500,),
-                onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  FittedBox(
+                    child: IconButton(
+                      icon: Icon(
+                        FluentIcons.remove_link_chain,
+                        size: 150,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  FittedBox(
+                    child: Text(
+                      "区块链共享系统",
+                      style: TextStyle(fontSize: 80),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -124,15 +140,16 @@ class navigatorState extends State<navigator> {
                 ),
               ),
               if (userModel.token != "")
-              PaneItem(
-                icon: const Icon(Icons.logout),
-                title: const Text('登出'),
-                body: Row(children: [Text("正在处理登出")],),
-                onTap: (){
-                  userModel.clearUser();
-                  handleIndexChanged(1);
-                }
-              ),
+                PaneItem(
+                    icon: const Icon(Icons.logout),
+                    title: const Text('登出'),
+                    body: Row(
+                      children: [Text("正在处理登出")],
+                    ),
+                    onTap: () {
+                      userModel.clearUser();
+                      handleIndexChanged(1);
+                    }),
             ],
           ),
           PaneItemExpander(
@@ -144,51 +161,44 @@ class navigatorState extends State<navigator> {
                 onPressed: () {},
               ),
             ),
-
             items: [
-                PaneItem(
+              PaneItem(
                   icon: const Icon(FluentIcons.upload),
                   title: const Text('文件上传'),
                   body: FileUploadPage(
                     navigateToNewPage: handleIndexChanged,
                   ),
-                  enabled:userModel.token != ""
-                ),
-
-                PaneItem(
+                  enabled: userModel.token != ""),
+              PaneItem(
                   icon: const Icon(FluentIcons.download),
                   title: const Text('查看被共享文件'),
                   body: FileAllowPage(
                     navigateToNewPage: handleIndexChanged,
                   ),
-                  enabled: userModel.token != ""
-                ),
+                  enabled: userModel.token != ""),
               PaneItem(
-                icon: const Icon(FluentIcons.open_file),
-                title: const Text('查看我上传的文件'),
-                body: FileSelfPage(
-                  navigateToNewPage: handleIndexChanged,
-                ),
-                enabled: userModel.token != ""
-              ),
+                  icon: const Icon(FluentIcons.open_file),
+                  title: const Text('查看我上传的文件'),
+                  body: FileSelfPage(
+                    navigateToNewPage: handleIndexChanged,
+                  ),
+                  enabled: userModel.token != ""),
               PaneItem(
                   icon: const Icon(FluentIcons.delve_analytics_logo),
                   title: const Text('文件操作记录'),
                   body: FileHistoryPage(
                     navigateToNewPage: handleIndexChanged,
                   ),
-                  enabled: userModel.token != ""
-              ),
+                  enabled: userModel.token != ""),
             ],
           ),
-
           PaneItem(
             icon: const Icon(FluentIcons.admin_a_logo32),
             title: const Text('管理员界面'),
             body: AdminPage(
               navigateToNewPage: handleIndexChanged,
             ),
-            enabled: userModel.type==2,
+            enabled: userModel.type == 2,
           ),
         ],
         footerItems: [

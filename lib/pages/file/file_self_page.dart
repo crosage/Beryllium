@@ -38,12 +38,14 @@ class _FileSelfPageState extends State<FileSelfPage> {
     return parseFiles;
   }
 
-
   Future<List<FileModel>> fetchData() async {
+    final params = {"pagesize": 50000};
     try {
       Response getResponse = await httpHelper.getRequest(
-          BaseUrl + "/api/file/created-files",
-          token: userModel.token);
+        BaseUrl + "/api/file/search-files",
+        token: userModel.token,
+        params: params,
+      );
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"] == 200) {
         var data = responseData["data"];
@@ -55,7 +57,27 @@ class _FileSelfPageState extends State<FileSelfPage> {
     } catch (e) {
       return [];
     }
+  }
 
+  Future<List<FileModel>> getSuggestions() async {
+    try {
+      final params = {"pagesize": 50000};
+      Response getResponse = await httpHelper.getRequest(
+          BaseUrl + "/api/file/search-files",
+          token: userModel.token,
+          params: params);
+      Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
+      if (responseData["code"] == 200) {
+        var data = responseData["data"];
+        print(data["files"]);
+        List<FileModel> parseFiles = _parseFiles(data["files"]);
+        return parseFiles;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
@@ -81,8 +103,10 @@ class _FileSelfPageState extends State<FileSelfPage> {
                 filesToString.add(tmp);
               }
               return TableWidget(
-                  headers: ["文件id", "文件名称", "文件共享码"], data: filesToString,onRowTap: (index,header){
-              },);
+                headers: ["文件id", "文件名称", "文件共享码"],
+                data: filesToString,
+                onRowTap: (index, header) {},
+              );
             } else {
               return Center(child: Text('No data available'));
             }
