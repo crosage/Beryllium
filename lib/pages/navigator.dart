@@ -40,7 +40,6 @@ class navigatorState extends State<navigator> {
   @override
   Widget build(BuildContext context) {
     userModel = Provider.of<UserModel>(context, listen: true);
-    print(userModel.token);
     return NavigationView(
       onOpenSearch: () {},
       appBar: const NavigationAppBar(
@@ -57,21 +56,15 @@ class navigatorState extends State<navigator> {
             icon: Icon(FluentIcons.global_nav_button),
             onPressed: () {
               if (paneDisplayMode == PaneDisplayMode.open) {
-                print("$paneDisplayMode to compact");
-
                 setState(() {
                   paneDisplayMode = PaneDisplayMode.compact;
                   visable = false;
                 });
-                print("$paneDisplayMode to compact");
               } else if (paneDisplayMode == PaneDisplayMode.compact) {
-                print("$paneDisplayMode to open");
-
                 setState(() {
                   paneDisplayMode = PaneDisplayMode.open;
                   visable = false;
                 });
-                print("$paneDisplayMode to open");
               }
             },
           ),

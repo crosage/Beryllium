@@ -43,6 +43,20 @@ class HttpHelper{
     }
   }
 
+  Future<Response> deleteRequest(String url, {String? token, Map<String, dynamic>? params}) async {
+    try {
+      if (token != null) {
+        _dio.options.headers['Authorization'] = 'Bearer $token';
+      } else {
+        _dio.options.headers.remove('Authorization');
+      }
+      Response response = await _dio.delete(url, queryParameters: params);
+      return response;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
   Future<Response> uploadFile(String url, String filePath, {String? token}) async {
     try {
       if (token != null) {

@@ -69,8 +69,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
           Row(
             children: [
               SizedBox(width: 20,),
-              FilledButton(child: Text("永久删除用户"),onPressed: (){
-
+              FilledButton(child: Text("永久删除用户"),onPressed: () async{
+                final response = await httpHelper.deleteRequest(BaseUrl+"/api/user/"+userModel.uid.toString(), token: userModel.token);
+                userModel.clearUser();
+                widget.navigateToNewPage(0);
               },style:ButtonStyle(backgroundColor: ButtonState.all(Color.fromARGB(255, 203, 64, 66))))
             ],
           )

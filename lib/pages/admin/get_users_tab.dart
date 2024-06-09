@@ -18,7 +18,6 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
   List<User> _parseUsers(List<dynamic> usersData) {
     List<User> parsedUsers = [];
     for (var userData in usersData) {
-      print(userData);
       parsedUsers.add(
         User.fromJson(userData)
       );
@@ -35,8 +34,6 @@ Tab createUsersTab(BuildContext context,Function onClosed) {
       };
       Response getResponse = await httpHelper.getRequest(BaseUrl + "/api/user",params: params, token: userModel.token);
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
-      print(responseData);
-      print("***************");
       if (responseData["code"] == 200) {
         var data = responseData["data"];
         List<User> parsedUsers = _parseUsers(data["users"]);

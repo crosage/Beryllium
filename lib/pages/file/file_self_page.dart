@@ -69,7 +69,6 @@ class _FileSelfPageState extends State<FileSelfPage> {
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"] == 200) {
         var data = responseData["data"];
-        print(data["files"]);
         List<FileModel> parseFiles = _parseFiles(data["files"]);
         return parseFiles;
       } else {

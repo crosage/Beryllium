@@ -28,14 +28,36 @@ class _FileAllowPageState extends State<FileAllowPage> {
   late final HttpHelper httpHelper;
   late final UserModel userModel;
   final TextEditingController _textEditingController = TextEditingController();
+  String _savePath = '';
 
   @override
   void initState() {
     super.initState();
     httpHelper = HttpHelper();
     userModel = Provider.of<UserModel>(context, listen: false);
+    _loadConfig();
   }
-
+  Future<void> _loadConfig() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final configDirectory = Directory('${directory.path}');
+    final file = File('${configDirectory.path}/config.json');
+    if (!await configDirectory.exists()) {
+      await configDirectory.create(recursive: true);
+    }
+    if (await file.exists()) {
+      final contents = await file.readAsString();
+      final config = jsonDecode(contents);
+      setState(() {
+        _savePath = config['savePath'] ?? '${file.path}';
+      });
+    } else {
+      final config = {'savePath': '${file.path}'};
+      await file.writeAsString(jsonEncode(config));
+      setState(() {
+        _savePath = config['savePath']!;
+      });
+    }
+  }
   List<FileModel> _parseFiles(List<dynamic> filesData) {
     List<FileModel> parseFiles = [];
     for (var fileData in filesData) {
@@ -53,7 +75,6 @@ class _FileAllowPageState extends State<FileAllowPage> {
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"] == 200) {
         var data = responseData["data"];
-        print(data["files"]);
         List<FileModel> parseFiles = _parseFiles(data["files"]);
         return parseFiles;
       } else {
@@ -76,7 +97,6 @@ class _FileAllowPageState extends State<FileAllowPage> {
       Map<String, dynamic> responseData = jsonDecode(getResponse.toString());
       if (responseData["code"] == 200) {
         var data = responseData["data"];
-        print(data["files"]);
         List<FileModel> parseFiles = _parseFiles(data["files"]);
         return parseFiles;
       } else {
@@ -133,11 +153,7 @@ class _FileAllowPageState extends State<FileAllowPage> {
 
                         headers: ["文件id", "文件名称", "文件所属用户", "文件共享码"],
                         data: filesToString,onRowTap: (index,header) async{
-                        Directory appDocDir = await getApplicationDocumentsDirectory();
-
-                        Directory userDataDir = Directory('${appDocDir.path}/user_data');
-
-                        String savePath = userDataDir.path+"/"+files[index].name;
+                        String savePath = _savePath+"/"+files[index].name;
                         await httpHelper.downloadFile(
                           BaseUrl+"/api/file/"+files[index].fid.toString(),
                           savePath,
@@ -146,7 +162,7 @@ class _FileAllowPageState extends State<FileAllowPage> {
                         setState(() {
                           ElegantNotification.success(
                             title: Text("success"),
-                            description: Text("下载文件成功"),
+                            description: Text("文件已保存至${savePath}"),
                             animation: AnimationType.fromTop,
                           ).show(context);
                         });

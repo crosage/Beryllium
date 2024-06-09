@@ -15,12 +15,15 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   String _savePath = '';
-  late TextEditingController _controller;
+  String _url = '';
+  late TextEditingController _pathController;
+  late TextEditingController _urlController;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _pathController = TextEditingController();
+    _urlController = TextEditingController();
     _loadConfig();
   }
 
@@ -28,27 +31,22 @@ class _SettingPageState extends State<SettingPage> {
     final directory = await getApplicationDocumentsDirectory();
     final configDirectory = Directory('${directory.path}');
     final file = File('${configDirectory.path}/config.json');
-
-    // Create directory if it doesn't exist
     if (!await configDirectory.exists()) {
       await configDirectory.create(recursive: true);
     }
-
-    print(directory.path);
     if (await file.exists()) {
       final contents = await file.readAsString();
       final config = jsonDecode(contents);
-      print(config);
       setState(() {
         _savePath = config['savePath'] ?? '${file.path}';
-        _controller.text = _savePath; // Set text from saved config
+        _pathController.text = _savePath;
       });
     } else {
       final config = {'savePath': '${file.path}'};
       await file.writeAsString(jsonEncode(config));
       setState(() {
         _savePath = config['savePath']!;
-        _controller.text = _savePath; // Set default text
+        _pathController.text = _savePath;
       });
     }
   }
@@ -57,7 +55,7 @@ class _SettingPageState extends State<SettingPage> {
     final directory = await getApplicationDocumentsDirectory();
     final configDirectory = Directory('${directory.path}');
     final file = File('${configDirectory.path}/config.json');
-    final config = {'savePath': _controller.text};
+    final config = {'savePath': _pathController.text};
     await file.writeAsString(jsonEncode(config));
   }
 
@@ -78,10 +76,36 @@ class _SettingPageState extends State<SettingPage> {
                 Text("文件保存路径:  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
                 Container(
                   child: TextField(
-                    controller: _controller,
+                    controller: _pathController,
                     onChanged: (value) {
                       setState(() {
                         _savePath = value;
+                      });
+                    },
+                    onSubmitted: (value) {
+
+                    },
+                  ),
+                  width: 500,
+                ),
+                IconButton(icon: Icon(Icons.check,size: 20,), onPressed: (){_saveConfig();})
+              ],
+            ),
+          ),
+          Material(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: 20,),
+                Icon(Icons.save),
+                Text("后端地址:  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                Container(
+                  child: TextField(
+                    controller: _urlController,
+                    onChanged: (value) {
+                      setState(() {
+                        _url = value;
                       });
                     },
                     onSubmitted: (value) {
@@ -101,7 +125,8 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _pathController.dispose();
+    _urlController.dispose();
     super.dispose();
   }
 }
